@@ -1,4 +1,4 @@
-usage: python mirrorxy.py directory x|y|z
+usage: python mirrorxyz.py directory x|y|z
 
 Read each jpg file in directory, and make a mirror image of it flipped on the specified axis/axes
   x  -> flip upside down
