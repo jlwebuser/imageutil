@@ -87,7 +87,7 @@ Many times I will do a mass download of files using a tool like googleimagesdown
 which ends up getting a lot of very long ugly filenames. 
 
 Note:
-It makes duplicate jpg and (the associated yolo_mark formatted lables files exists) 
+It makes duplicate jpg and (the associated yolo_mark formatted label files exists) 
 in the dst-directory using the basname + counter.
 
 It will not modify the source JPG/TXT file in the src-dir.
