@@ -9,12 +9,15 @@
 
 <strong>usage: python mirrorxyz.py directory x|y|z</strong>
 
-Read each jpg file in directory, and make a mirror image of it flipped on the specified axis/axes
-  x  -> flip upside down
-  y  -> flip left/right
-  z -> flip bottom left to top right (and x and y flip combined)
+Read each jpg file in directory, and make a mirror image of it flipped around the specified axis
+<blockquote>
+  
+        x -> flip upside down
+        y -> flip left/right
+        z -> flip bottom left to top right (and x and y flip combined)
+</blockquote>
 
-This is used to create more sample images for machine learning, it may help reduce directional bias.
+This is used to create more sample images for machine learning, it may help reduce directional bias. I find flipping on the y axis is the most useful, but the others can add additional variation. 
 
 The files created will have the following string added to the basename of the source jpg file (-xX, -yY, -zZ)
 
@@ -32,20 +35,18 @@ Flip all jpg/txt files in data/myfiles vertically and horizontally (mirror left/
        
         python mirrorxyz.py data/myfiles z
 
-If the associated rectangle markup files are found it will read, and flip the coordinations of the rectangle
-matching the mirrored jpg file will have the same string added to the basename of the newly created txt file
+If the associated rectangle lable markup file is found it will read, and flip the coordinations of the rectangle
+matching the mirrored jpg file will have the same string added to the basename of the newly created txt file.
+For example:
 
-  test.jpg --> test-xX.jpg
+    test.jpg --> test-xX.jpg  
+    test.txt --> test-xX.jpg
+
+    test2.jpg --> test2-yY.jpg
+    test2.txt --> test2-yY.txt
   
-  test.txt --> test-xX.jpg
-  
-  test2.jpg --> test2-yY.jpg
-  
-  test2.txt --> test2-yY.txt
-  
-  test3.jpg --> test3-zZ.jpg
-  
-  test3.txt --> test3-zZ.txt
+    test3.jpg --> test3-zZ.jpg
+    test3.txt --> test3-zZ.txt
 </blockquote>
 Notes
    tested on python3 on Windows 10
