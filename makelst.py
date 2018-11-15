@@ -6,12 +6,15 @@
 #
 #  Notes
 #  if a JPG file is missing its associated Txt file, an empty label list will be returned, 
-#  and a well formed line with no label data will be emitted
+#  and a well formed line with a fake label of -1. -1. -1. -1. -1  will be emitted - if its
+#  just left with no label it seems like recordio rejects it - https://github.com/zhreshold/mxnet-ssd/issues/163
 #
 #  If the txt file has multiple labels, they will all be read, converted, and emitted in a line 
 #  in the lst file (its possible that they should be sorted by classid in the future)
 #
 #  The order of the output is determined by the directory listing - if you want to randomize the order, then use something like the unix shuf command.
+#
+#  if you have alot of lables (10+ make sure to set the label_width really large (like 500 in the hyperparameters))
 #
 
 import cv2
@@ -54,12 +57,18 @@ def processfile (srcjpg):
     except IOError:
         print (sys.argv[0], "rectangle file does not exist: ", txtfile)
         return None
+    global maxlab
+    if len(labels) > maxlab:
+        maxlab = len(labels)
+        #print ("maxlab:", maxlab, srcjpg)
+    if len(labels) == 0:
+        labels.append(["-1.", "-1.", "-1.", "-1.", "-1."])
     return True, width, height, labels
 
 #
 #  Main section that plucks and validates the args, and processes the file list
 #
-
+maxlab = 0
 count = 0
 if len(sys.argv) == 2:
     # get path to directory to convert
