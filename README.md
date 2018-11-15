@@ -1,3 +1,12 @@
+Utilties for sample data for ML
+
+mirrorxyz.py - make a mirror copy of a jpg around the x, y, or z axis (to get a reflection to increase) and if there is a yolo_mark lable file of the same name, created a mirror of it also.
+
+makelst.py - reads a directoy of jpg and txt files that are of the yolo_mark format transforms to stdout a LST file that can be input   to im2rec.py so you can make a mxnet REC file for training or validation... 
+
+
+mirrorxyz.py:
+
 usage: python mirrorxyz.py directory x|y|z
 
 Read each jpg file in directory, and make a mirror image of it flipped on the specified axis/axes
@@ -37,4 +46,9 @@ Notes
    it will not attempt to process files that end in -xX.jpg, -yY.jpg, -zZ.jpg (they have already been flipped)
    if you run it multiple times on the same directory, it will overwrite previously generated mirrored jpg/txt files (-xX.*, -yY.*, -zZ.*)
     
+makelst.py
+
+usage: python makelst.py  directory-to-scan 
+
+Scans the specified directory for JPG files, and the associated .txt file in the yolo_mark format. Produces to standard out a tab delimited LST file that is compatible with im2rec.py for creation of a REC dataset file. 
 
