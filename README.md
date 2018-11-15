@@ -4,6 +4,7 @@
 
 <strong>makelst.py</strong> - reads a directoy of jpg and txt files that are of the yolo_mark format transforms to stdout a LST file that can be input   to im2rec.py so you can make a mxnet REC file for training or validation... 
 
+<strong>cleanupnames.py - scan a directory for all .jpg and associated yolo_mark .txt files and copy to a new directory with a new base filename.
 
 <h2>mirrorxyz.py</h2>
 
@@ -67,4 +68,34 @@ Note that the LST file has a minimal header (it does not include the image width
 Requires 
 python3 and opencv to be installed
 
+<h2><python cleanupnames.py  src-dir dest-dir basename</h2>
+
+Script to clean up names of JPG and yolo_mark label files into a new directory.
+
+<strong>python cleanupnames.py src-dir dest-dir img</strong>
+For Example:
+<blockquote>
+  
+        src-dir/foo99999.jpg   -> dest-dir/img0.jpg
+        src-dir/foo99999.txt   -> dest-dir/img0.txt
+        src-dir/crappppyyy.jpg -> dest-dir/img1.txt
+        src-dir/232432-xX.jpg  -> dest-dir/img2-xX.jpg 
+        src-dir/232432-xX.txt  -> dest-dir/img2-xX.txt
+</blockquote>
+
+Many times I will do a mass download of files using a tool like googleimagesdownload
+which ends up getting a lot of very long ugly filenames. 
+
+Note:
+It makes duplicate jpg and (the associated yolo_mark formatted lables files exists) 
+in the dst-directory using the basname + counter.
+
+It will not modify the source JPG/TXT file in the src-dir.
+It will overwrite files in the dest-dir.
+If the .txt file associated with a .jpg file is missing it just process the JPG file, and silently continue. 
+
+It will ONLY process .txt files for which a JPG file exists. 
+If the JPG/TXT file is a result of the script mirrorxyz.py (tagged wtih -xX, or -yY, or -zZ)
+This way its still easy to tell that its a mirror image. 
+  
 
