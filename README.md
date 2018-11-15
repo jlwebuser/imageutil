@@ -1,6 +1,6 @@
 <h1>Utilties for working on image/label data for ML</h1>
 
-<strong>mirrorxyz.py</strong> - make a mirror copy of a jpg around the x, y, or z axis (to get a reflection to increase) and if there is a yolo_mark lable file of the same name, created a mirror of it also.
+<strong>mirrorxyz.py</strong> - make a mirror copy of a jpg around the x, y, or z axis (to get a reflection to increase) and if there is a yolo_mark label file of the same name, created a mirror of it also.
 
 <strong>makelst.py</strong> - reads a directoy of jpg and txt files that are of the yolo_mark format transforms to stdout a LST file that can be input   to im2rec.py so you can make a mxnet REC file for training or validation... 
 
