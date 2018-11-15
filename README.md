@@ -36,7 +36,7 @@ Flip all jpg/txt files in data/myfiles vertically and horizontally (mirror left/
        
         python mirrorxyz.py data/myfiles z
 
-If the associated rectangle lable markup file is found it will read, and flip the coordinations of the rectangle
+If the associated rectangle label markup file is found it will read, and flip the coordinations of the rectangle
 matching the mirrored jpg file will have the same string added to the basename of the newly created txt file.
 For example:
 
