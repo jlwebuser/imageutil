@@ -1,6 +1,6 @@
 <h1>Utilties for working on image/label data for ML</h1>
 
-<strong>mirrorxyz.py</strong> - make a mirror copy of a jpg around the x, y, or z axis (to get a reflection to increase) and if there is a yolo_mark lable file of the same name, created a mirror of it also.
+<strong>mirrorxyz.py</strong> - make a mirror copy of a jpg around the x, y, or z axis (to get a reflection to increase) and if there is a yolo_mark label file of the same name, created a mirror of it also.
 
 <strong>makelst.py</strong> - reads a directoy of jpg and txt files that are of the yolo_mark format transforms to stdout a LST file that can be input   to im2rec.py so you can make a mxnet REC file for training or validation... 
 
@@ -36,7 +36,7 @@ Flip all jpg/txt files in data/myfiles vertically and horizontally (mirror left/
        
         python mirrorxyz.py data/myfiles z
 
-If the associated rectangle lable markup file is found it will read, and flip the coordinations of the rectangle
+If the associated rectangle label markup file is found it will read, and flip the coordinations of the rectangle
 matching the mirrored jpg file will have the same string added to the basename of the newly created txt file.
 For example:
 
@@ -87,7 +87,7 @@ Many times I will do a mass download of files using a tool like googleimagesdown
 which ends up getting a lot of very long ugly filenames. 
 
 Note:
-It makes duplicate jpg and (the associated yolo_mark formatted lables files exists) 
+It makes duplicate jpg and (the associated yolo_mark formatted label files exists) 
 in the dst-directory using the basname + counter.
 
 It will not modify the source JPG/TXT file in the src-dir.
