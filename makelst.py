@@ -55,12 +55,8 @@ def processfile (srcjpg):
                 ymax = round(float(s[2]) + float(s[4])/2, 5)
                 labels.append([str(float(s[0])), str(xmin), str(ymin), str(xmax), str(ymax)])
     except IOError:
-        print (sys.argv[0], "rectangle file does not exist: ", txtfile)
-        return None
-    global maxlab
-    if len(labels) > maxlab:
-        maxlab = len(labels)
-        #print ("maxlab:", maxlab, srcjpg)
+        #print (sys.argv[0], "rectangle file does not exist, defaulting no label (-1 class): ", txtfile)
+        it=1
     if len(labels) == 0:
         labels.append(["-1.", "-1.", "-1.", "-1.", "-1."])
     return True, width, height, labels
@@ -68,7 +64,6 @@ def processfile (srcjpg):
 #
 #  Main section that plucks and validates the args, and processes the file list
 #
-maxlab = 0
 count = 0
 if len(sys.argv) == 2:
     # get path to directory to convert
