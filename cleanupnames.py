@@ -1,4 +1,4 @@
-
+#!/usr/bin/python
 #
 #  <h2><python cleanupnames.py  src-dir dest-dir basename</h2>
 #

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #
 #  This script scans the specified directory for JPG/TXT files using the "YOLO" markup 
 #  The yolo markup is a txt file by the same name containing the labels for that image.

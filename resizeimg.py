@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #
 #   clamp the width (and height preserving aspect ratio) of all the JPG files in the specified directory(s)
 #   who's width is greater than the width specified on the command line.

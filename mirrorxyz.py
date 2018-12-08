@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # usage: mirrorxy directory x|y|z
 #
 # read each jpg file, and make a mirror image of it flipped on the specified axis/axes

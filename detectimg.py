@@ -1,6 +1,6 @@
 #!/usr/bin/python
 '''
-usage: dettest.py [-h] --prefix PREFIX [--synset SYNSET] [--thresh THRESH]
+usage: detectimg.py [-h] --prefix PREFIX [--synset SYNSET] [--thresh THRESH]
                   [--pause PAUSE] [--nbbox NBBOX] [--width WIDTH]
                   [--imagedir IMAGEDIR] [--noplt]
                   ...
