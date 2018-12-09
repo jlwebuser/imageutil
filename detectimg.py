@@ -38,6 +38,7 @@ import cv2
 from matplotlib import pyplot as plt
 from gluoncv import utils
 import mxnet as mx
+import dvr
 
 def parse_args():
     '''Load args...'''
@@ -61,6 +62,8 @@ def parse_args():
                         help='run detection on all jpg files in imagedir; default tst.img')
     parser.add_argument('--noplt', dest='noplt', action='store_true',
                         help='text only, do not popup plt canvass and draw bounding boxes')
+    parser.add_argument ('--record', dest='record', type=str,
+                         help='record detection to file specified, does not work with --noplt')
     parser.add_argument('args', nargs=argparse.REMAINDER,
                         help='optional space separated list of files to load from command line')
     args = parser.parse_args()
@@ -116,7 +119,7 @@ def predict(filename, model, n, scale_width):
     model.forward(Batch([array]))
     prob = model.get_outputs()[0].asnumpy()
     prob = np.squeeze(prob)
-    print("Predicted in %2.8f seconds" % time.time() -t1)
+    print("Predicted in %2.8f seconds" % (time.time() -t1))
     a = prob[0:n]
     for z in a:
         if z[0] >= 0:
@@ -139,6 +142,15 @@ def init(modelname, catfilename):
 
 ARGS = parse_args()
 NET, CLASSNAMES = init(ARGS.prefix, ARGS.synset)
+dvr1=None
+
+if ARGS.noplt and args.record:
+    print(argv[0]+": --noplt overridden by --record")
+    args.noplt = False
+
+if ARGS.record:
+    dvr1 = dvr.DVR(path='.', frame_rate=3)
+    dvr1.activate_recording(duration=2000)
 
 if ARGS.args:
     # use files from command line
@@ -151,13 +163,16 @@ else:
 print("Using model:", ARGS.prefix, "scaling to:", ARGS.width)
 
 for f in FILES:
-    lables, scores, bbox = predict(f, NET, ARGS.nbbox, ARGS.width)
+    labels, scores, bbox = predict(f, NET, ARGS.nbbox, ARGS.width)
     if not ARGS.noplt:
         img = cv2.imread(f)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         plt.close()
-        ax = utils.viz.plot_bbox(img, bbox, scores=scores, labels=lables,
+        ax = utils.viz.plot_bbox(img, bbox, scores=scores, labels=labels,
                                  thresh=ARGS.thresh, class_names=CLASSNAMES,
                                  absolute_coordinates=False)
         plt.show(block=False)
+        plt.savefig ('out.png')
+        img2 = cv2.imread ('out.png')
+        dvr1.record_frame_if_active (img2)
         plt.pause(ARGS.pause)
