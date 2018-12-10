@@ -53,7 +53,11 @@ if ARGS.width > 2000:
     sys.exit()
 
 for fdir in ARGS.args:
-    files = [os.path.join(fdir, x) for x in fnmatch.filter(os.listdir(fdir), '*.jpg')]
+    try:
+        files = [os.path.join(fdir, x) for x in fnmatch.filter(os.listdir(fdir), '*.jpg')]
+    except:
+        print (sys.argv[0]+": can't access ", fdir, file=sys.stderr)
+        continue
     if not files:
         print("skipping: no jpg files in", fdir, file=sys.stderr)
         continue
