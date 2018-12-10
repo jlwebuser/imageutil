@@ -23,54 +23,88 @@
 #  This way its still easy to tell that its a mirror image.
 #
 #
-#   python cleanupnames.py src-dir dest-dir  img
+#   cleanupnames.py --srcdir src --dstdir dst  --basename img
 #
-#   src-dir/foo99999.jpg   -> dest-dir/img0.jpg
-#   src-dir/foo99999.txt   -> dest-dir/img0.txt
-#   src-dir/crappppyyy.jpg -> dest-dir/img1.txt
-#   src-dir/232432-xX.jpg  -> dest-dir/img2-xX.jpg
-#   src-dir/232432-xX.txt  -> dest-dir/img2-xX.txt
+#   src/foo99999.jpg   -> dst/img0.jpg
+#   src/foo99999.txt   -> dst/img0.txt
+#   src/crappppyyy.jpg -> dst/img1.txt
+#   src/232432-xX.jpg  -> dst/img2-xX.jpg
+#   src/232432-xX.txt  -> dst/img2-xX.txt
 #
 '''
-
 import os
 import sys
 import shutil
 import fnmatch
+import argparse
 
-if len(sys.argv) != 4:
-    print("usage:", sys.argv[0], "src-dir dst-dir base-filename")
+def parse_args():
+    '''Load args...'''
+    description = '''Read all the JPG files (and associated yolo label txt files) in srcdir
+    and copy them to dstdir using basename plus a counter.
+
+    It will not modify the source JPG/TXT file in the srcdir.
+
+    It will overwrite files in the dstdir.
+
+    If the .txt file associated with a .jpg file is missing it just process the JPG file,
+    and silently continue.
+
+    It will ONLY process .txt files for which a JPG file exists.
+
+    If the JPG/TXT file is a result of the script mirrorxyz.py (tagged
+    with -xX, or -yY, or -zZ). This way its still easy to tell that its a
+    mirror image.
+
+    usage: cleanupnames.py --srcdir src --dstdir dst  --basename img
+
+    for example:
+    src/foo99999.jpg   -> dst/img0.jpg
+    src/foo99999.txt   -> dst/img0.txt
+    src/crappppyyy.jpg -> dst/img1.txt
+    src/232432-xX.jpg  -> dst/img2-xX.jpg
+    src/232432-xX.txt  -> dst/img2-xX.txt
+
+    '''
+    parser = argparse.ArgumentParser(description)
+    parser.add_argument('--srcdir', dest='srcdir', required=True, type=str,
+                        help='source directory to copy files from')
+    parser.add_argument('--dstdir', dest='dstdir', required=True, type=str,
+                        help='target directory to copy renamed files into')
+    parser.add_argument('--basename', dest='basename', required=True, type=str,
+                        help='basename to use to form new file names')
+
+    args = parser.parse_args()
+    return args
+
+ARGS = parse_args()
+
+if not os.path.exists(ARGS.srcdir):
+    print(sys.argv[0], ARGS.srcdir, "(srcdir) does not exist", file=sys.stderr)
     sys.exit()
 
-# get path to directory to convert
-srcpath = sys.argv[1]
-dstpath = sys.argv[2]
-newname = sys.argv[3]
-
-if not os.path.exists(srcpath):
-    print(sys.argv[0], srcpath, "does not exist")
-    sys.exit()
-if not os.path.exists(dstpath):
-    print(sys.argv[0], dstpath, "does not exist")
+if not os.path.exists(ARGS.dstdir):
+    print(sys.argv[0], ARGS.dstdir, "(dstdir) does not exist", file=sys.stderr)
     sys.exit()
 
-counter = 0
-dirlist = fnmatch.filter(os.listdir(srcpath), "*.jpg")
-for file in dirlist:
+#loop through one file at a time
+COUNTER = 0
+for file in fnmatch.filter(os.listdir(ARGS.srcdir), "*.jpg"):
     # form the full path to the source jpg file
-    srcjpg = os.path.join(srcpath, file)
-    basename = newname
+    srcjpg = os.path.join(ARGS.srcdir, file)
+    basename = ARGS.basename
     if file[-7:] in ["-xX.jpg", "-yY.jpg", "-zZ.jpg"]:
-        basename = basename + file[-7:-4]
+        # preserve extentions by mirrorxzy.py if the file has it
+        basename += file[-7:-4]
 
     txtfile = srcjpg[:-4] + ".txt"
-    dstjpg = os.path.join(dstpath, basename+str(counter) + ".jpg")
-    dsttxt = os.path.join(dstpath, basename+str(counter) + ".txt")
+    dstjpg = os.path.join(ARGS.dstdir, basename+str(COUNTER) + ".jpg")
+    dsttxt = os.path.join(ARGS.dstdir, basename+str(COUNTER) + ".txt")
     shutil.copyfile(srcjpg, dstjpg)
-    print("Copy:", srcjpg, "to", dstjpg)
+    print("Copy:", srcjpg, "to", dstjpg, file=sys.stderr)
     if os.path.exists(txtfile):
         shutil.copyfile(txtfile, dsttxt)
-        print("Copy:", txtfile, "to", dsttxt)
-    counter += 1
+        print("Copy:", txtfile, "to", dsttxt, file=sys.stderr)
+    COUNTER += 1
 
-print(sys.argv[0], ": processed", counter, "jpg files")
+print(sys.argv[0], ": processed", COUNTER, "jpg files", file=sys.stderr)
